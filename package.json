@@ -1,0 +1,20 @@
+{
+  "name": "auth",
+  "version": "1.0.0",
+  "description": "Authentication application",
+  "homepage": "https://github.com/Gopichandu923/Auth#readme",
+  "bugs": {
+    "url": "https://github.com/Gopichandu923/Auth/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gopichandu923/Auth.git"
+  },
+  "license": "ISC",
+  "author": "gopi",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
