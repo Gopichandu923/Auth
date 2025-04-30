@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auth | Login</title>
+  </head>
+  <body>
+    <div class="conatiner">
+      <form onsubmit="handleLogin">
+        <input
+          type="text"
+          placeholder="Enter user name or email"
+          autocomplete="off"
+          required
+        />
+        <input
+          type="password"
+          placeholder="Enter password"
+          autocomplete="off"
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+    <script>
+      const handleLogin = async (name, pass) => {
+        const res = await fetch("url", {
+          name,
+          pass,
+        });
+      };
+    </script>
+  </body>
+</html>
