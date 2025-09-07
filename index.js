@@ -22,7 +22,7 @@ app.get("/login", (req, res) => {
   res.status(200).render("login");
 });
 
-//
+//for login -post request
 app.post("/login", async (req, res) => {});
 
 app.listen(port, () => {
