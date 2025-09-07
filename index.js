@@ -17,9 +17,14 @@ app.get("/", (req, res) => {
   res.status(200).render("home");
 });
 
+//for login page   - get request
 app.get("/login", (req, res) => {
   res.status(200).render("login");
 });
+
+//
+app.post("/login", async (req, res) => {});
+
 app.listen(port, () => {
   console.log(`server is running on port ${port}`);
 });
