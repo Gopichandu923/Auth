@@ -28,7 +28,9 @@ app.post("/login", async (req, res) => {});
 
 //to get register page   - get request
 
-app.get("/register");
+app.get("/register", async (req, res) => {
+  res.status(200).render("register");
+});
 
 //to post data to register user  - post request
 app.post("/register", async (req, res) => {});
