@@ -1,136 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Auth | Register</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuthX | Register</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --secondary: #a855f7;
+      --bg: #0f172a;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      filter: blur(80px);
+      border-radius: 50%;
+      z-index: -1;
+      animation: float 20s infinite alternate;
+    }
+
+    @keyframes float {
+      from {
+        transform: translate(-10%, -10%) scale(1);
       }
 
-      body {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #667eea, #764ba2);
+      to {
+        transform: translate(10%, 10%) scale(1.1);
+      }
+    }
+
+    .container {
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      padding: 2.5rem;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
       }
 
-      .container {
-        background: #fff;
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        width: 350px;
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
+    }
 
-      h2 {
-        text-align: center;
-        margin-bottom: 1.5rem;
-        color: #333;
-      }
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
 
-      form {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
+    p.subtitle {
+      color: #94a3b8;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
 
-      input {
-        padding: 0.8rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: border 0.3s ease;
-      }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
 
-      input:focus {
-        border-color: #667eea;
-        outline: none;
-      }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 0.5rem;
+    }
 
-      button {
-        padding: 0.8rem;
-        border: none;
-        border-radius: 8px;
-        background: #667eea;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
+    input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
 
-      button:hover {
-        background: #5643cc;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h2>Register</h2>
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
 
-      <!-- Dynamic error message -->
-      <% if (typeof error !== "undefined") { %>
-      <p style="color: red; text-align: center"><%= error %></p>
-      <% } %>
+    button {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4);
+      margin-top: 1rem;
+    }
 
-      <form id="registerForm">
-        <input
-          type="text"
-          id="username"
-          placeholder="Enter username"
-          autocomplete="off"
-          value="<%= typeof name !== 'undefined' ? name : '' %>"
-          required
-        />
-        <input
-          type="email"
-          id="email"
-          placeholder="Enter email"
-          autocomplete="off"
-          value="<%= typeof email !== 'undefined' ? email : '' %>"
-          required
-        />
-        <input
-          type="password"
-          id="password"
-          placeholder="Enter password"
-          autocomplete="off"
-          required
-        />
-        <button type="submit">Register</button>
-      </form>
+    button:hover {
+      background: #4f46e5;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+    }
+
+    .footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    #message {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.85rem;
+      padding: 0.75rem;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .error {
+      background: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .success {
+      background: rgba(34, 197, 94, 0.1);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="blob"></div>
+  <div class="container">
+    <h2>Create Account</h2>
+    <p class="subtitle">Join AuthX for premium secure access</p>
+
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="johndoe" autocomplete="off" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="john@example.com" autocomplete="off" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••" autocomplete="off" required />
+      </div>
+      <button type="submit" id="submitBtn">Register</button>
+    </form>
+
+    <div id="message"></div>
+
+    <div class="footer">
+      Already have an account? <a href="/login">Sign In</a>
     </div>
+  </div>
 
-    <script>
-      const form = document.getElementById("registerForm");
+  <script>
+    const form = document.getElementById("registerForm");
+    const messageDiv = document.getElementById("message");
+    const submitBtn = document.getElementById("submitBtn");
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-        const name = document.getElementById("username").value;
-        const email = document.getElementById("email").value;
-        const pass = document.getElementById("password").value;
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-        try {
-          const res = await fetch("http://localhost:5000/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, pass }),
-          });
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Creating account...";
+      messageDiv.style.display = "none";
 
-          const data = await res.json();
-          console.log("Response:", data);
-          alert("Registered successfully!");
-        } catch (err) {
-          console.error("Error:", err);
-          alert("Something went wrong!");
+      try {
+        const res = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          messageDiv.innerText = "Registered successfully! Redirecting to login...";
+          messageDiv.className = "success";
+          messageDiv.style.display = "block";
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 1500);
+        } else {
+          messageDiv.innerText = data.message || "Registration failed";
+          messageDiv.className = "error";
+          messageDiv.style.display = "block";
+          submitBtn.disabled = false;
+          submitBtn.innerText = "Register";
         }
-      });
-    </script>
-  </body>
+      } catch (err) {
+        console.error("Error:", err);
+        messageDiv.innerText = "Something went wrong!";
+        messageDiv.className = "error";
+        messageDiv.style.display = "block";
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Register";
+      }
+    });
+  </script>
+</body>
+
 </html>
