@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongodb-session";
+import passport from "./passportConfig.js";
 import { connect } from "./databaseconfig.js";
 import User from "./model/user.js";
 
@@ -45,9 +46,13 @@ app.use(
   })
 );
 
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Auth Middleware
 const isAuth = (req, res, next) => {
-  if (req.session.isAuth) {
+  if (req.isAuthenticated() || req.session.isAuth) {
     next();
   } else {
     res.redirect("/login");
@@ -58,8 +63,16 @@ const isAuth = (req, res, next) => {
 
 // Home page
 app.get("/", (req, res) => {
-  res.status(200).render("home", { user: req.session.user });
+  res.status(200).render("home", { user: req.user || req.session.user });
 });
+
+// OAuth Routes
+app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  (req, res) => res.redirect("/dashboard")
+);
 
 // Login page
 app.get("/login", (req, res) => {
@@ -133,16 +146,19 @@ app.post("/register", async (req, res) => {
 });
 
 // Logout
-app.post("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) throw err;
-    res.redirect("/");
+app.post("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    req.session.destroy((err) => {
+      if (err) throw err;
+      res.redirect("/");
+    });
   });
 });
 
 // Dashboard (Protected)
 app.get("/dashboard", isAuth, (req, res) => {
-  res.render("home", { user: req.session.user });
+  res.render("home", { user: req.user || req.session.user });
 });
 
 // Run server
